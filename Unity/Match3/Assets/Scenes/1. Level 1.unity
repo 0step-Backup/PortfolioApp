@@ -2776,8 +2776,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1590828673}
   - component: {fileID: 1590828672}
+  - component: {fileID: 1590828674}
   m_Layer: 0
-  m_Name: Pane.Grid
+  m_Name: Stage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2813,6 +2814,19 @@ Transform:
   - {fileID: 1106520702}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1590828674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590828671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4be13fb899a6664e8f81aa9c1d66d66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TMAP_Gems: {fileID: 1106520704}
 --- !u!1 &1647744797
 GameObject:
   m_ObjectHideFlags: 0
