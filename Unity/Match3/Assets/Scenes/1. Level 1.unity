@@ -2778,7 +2778,7 @@ GameObject:
   - component: {fileID: 1590828672}
   - component: {fileID: 1590828674}
   m_Layer: 0
-  m_Name: Stage
+  m_Name: Stage.Design
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
