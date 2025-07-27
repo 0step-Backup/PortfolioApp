@@ -1,6 +1,6 @@
 namespace LLOYD.Match3.Common
 {
-    public class Types
+    public class Defines
     {
         public enum Gem { NONE = -1,
             random = 0,
