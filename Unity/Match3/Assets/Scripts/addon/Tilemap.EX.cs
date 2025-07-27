@@ -22,8 +22,8 @@ namespace LLOYD.Match3.Addon
                         TileBase tile = allTiles[x + y * bounds.size.x];
                         if (tile != null)
                         {
-                            // 타일 처리 로직 (예: 타일 정보 출력)
-                            Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name}");
+                            //if(!tile.name.Contains("Random"))
+                                Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name}");// 타일 처리 로직 (예: 타일 정보 출력)
 
                             count += 1;
                         }
@@ -47,8 +47,8 @@ namespace LLOYD.Match3.Addon
 
                         if (tile != null)
                         {
-                            // 타일 처리 로직 (예: 타일 정보 출력)
-                            Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name}");
+                            //if (!tile.name.Contains("Random"))
+                                Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name}");// 타일 처리 로직 (예: 타일 정보 출력)
                             count += 1;
                         }
                     }
@@ -77,8 +77,8 @@ namespace LLOYD.Match3.Addon
                         TileBase tile = __timlemap.GetTile(cellPosition);
                         if (tile != null)
                         {
-                            //strlog += $", 타일 이름: {tile.name}";
-                            Debug.Log($"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}, 타일 이름: {tile.name}");
+                            //if (!tile.name.Contains("Random"))
+                                Debug.Log($"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}, 타일 이름: {tile.name}");
                             count += 1;
                         }
 
