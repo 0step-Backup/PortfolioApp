@@ -16,6 +16,10 @@ namespace LLOYD.Match3.Types
         [SerializeField] Sprite _sprite;
         [SerializeField] Defines.Gem _gem = Defines.Gem.NONE;
 
+        public Defines.Gem TYPE {
+            get => _gem;
+        }
+
         public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
         {
             tileData.sprite = _sprite;

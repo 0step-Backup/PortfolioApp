@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -5,6 +6,8 @@ namespace LLOYD.Match3.Addon
 {
     namespace Tilemap
     {
+        using LLOYD.Match3.Types;
+
         static class Extensions
         {
             public static void Loop_Tiles(this UnityEngine.Tilemaps.Tilemap __timlemap)
@@ -19,11 +22,11 @@ namespace LLOYD.Match3.Addon
                 {
                     for (int y = 0; y < bounds.size.y; y++)
                     {
-                        TileBase tile = allTiles[x + y * bounds.size.x];
+                        var tile = allTiles[x + y * bounds.size.x] as GemTile;
                         if (tile != null)
                         {
                             //if(!tile.name.Contains("Random"))
-                                Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name}");// 타일 처리 로직 (예: 타일 정보 출력)
+                                Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name} (Type: {tile.TYPE})");// 타일 처리 로직 (예: 타일 정보 출력)
 
                             count += 1;
                         }
@@ -43,12 +46,12 @@ namespace LLOYD.Match3.Addon
                     for (int y = bounds.y; y < bounds.yMax; y++)
                     {
                         Vector3Int cellPosition = new Vector3Int(x, y, 0);
-                        TileBase tile = __timlemap.GetTile(cellPosition);
+                        var tile = __timlemap.GetTile(cellPosition) as GemTile;
 
                         if (tile != null)
                         {
                             //if (!tile.name.Contains("Random"))
-                                Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name}");// 타일 처리 로직 (예: 타일 정보 출력)
+                                Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name} (Type: {tile.TYPE})");// 타일 처리 로직 (예: 타일 정보 출력)
                             count += 1;
                         }
                     }
@@ -74,11 +77,11 @@ namespace LLOYD.Match3.Addon
                         // 월드 좌표에서 타일 처리 로직
                         //string strlog = $"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}";
 
-                        TileBase tile = __timlemap.GetTile(cellPosition);
+                        var tile = __timlemap.GetTile(cellPosition) as GemTile;
                         if (tile != null)
                         {
                             //if (!tile.name.Contains("Random"))
-                                Debug.Log($"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}, 타일 이름: {tile.name}");
+                                Debug.Log($"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}, 타일 이름: {tile.name} (Type: {tile.TYPE})");
                             count += 1;
                         }
 
