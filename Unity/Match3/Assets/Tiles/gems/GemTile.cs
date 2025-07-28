@@ -13,7 +13,7 @@ namespace LLOYD.Match3.Types
     [CreateAssetMenu(fileName = "GemTile", menuName = "LLOYD - Match3/Tile/Gem Tile")]
     public class GemTile : TileBase
     {
-        [SerializeField] Sprite _sprite;
+        [SerializeField] Sprite _sprite = null;
         [SerializeField] Defines.Gem _gem = Defines.Gem.NONE;
 
         public Defines.Gem TYPE {

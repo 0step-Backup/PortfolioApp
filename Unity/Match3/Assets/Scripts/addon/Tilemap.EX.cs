@@ -6,7 +6,9 @@ namespace LLOYD.Match3.Addon
 {
     namespace Tilemap
     {
+        using LLOYD.Match3.Common;
         using LLOYD.Match3.Types;
+        using System.Collections.Generic;
 
         static class Extensions
         {
@@ -34,10 +36,12 @@ namespace LLOYD.Match3.Addon
                 }
                 Debug.Log($"Stage.Loop_Tiles(): gem 개수= {count}");
             }
-            public static void Loop_Tiles_byGetTile(this UnityEngine.Tilemaps.Tilemap __timlemap)
+            public static Dictionary<Vector3Int, Defines.Gem> Loop_Tiles_byGetTile(this UnityEngine.Tilemaps.Tilemap __timlemap)
             {
                 // 타일맵 전체 크기 가져오기
                 BoundsInt bounds = __timlemap.cellBounds;
+
+                var ret = new Dictionary<Vector3Int, Defines.Gem>();
 
                 // 모든 타일 순회
                 int count = 0;
@@ -50,13 +54,16 @@ namespace LLOYD.Match3.Addon
 
                         if (tile != null)
                         {
-                            //if (!tile.name.Contains("Random"))
-                                Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name} (Type: {tile.TYPE})");// 타일 처리 로직 (예: 타일 정보 출력)
+                            ////if (!tile.name.Contains("Random"))
+                            //    Debug.Log($"타일 위치: ({x}, {y}), 타일 이름: {tile.name} (Type: {tile.TYPE})");// 타일 처리 로직 (예: 타일 정보 출력)
                             count += 1;
+
+                            ret.Add(cellPosition, tile.TYPE);
                         }
                     }
                 }
                 Debug.Log($"Stage.Loop_Tiles_byGetTile(): gem 개수= {count}");
+                return ret;
             }
             public static void Loop_Tiles_byGrid(this UnityEngine.Tilemaps.Tilemap __timlemap, Grid __grid)
             {
