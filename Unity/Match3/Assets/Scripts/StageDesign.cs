@@ -7,7 +7,7 @@ namespace LLOYD.Match3
     using AYellowpaper.SerializedCollections;
     using LLOYD.Match3.Common;
 
-    public class Stage : MonoBehaviour
+    public class StageDesign : MonoBehaviour
     {
         [SerializeField] Tilemap TMAP_Gems = null;
 
