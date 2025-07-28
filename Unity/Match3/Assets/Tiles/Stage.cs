@@ -33,7 +33,11 @@ namespace LLOYD.Match3
                     GameObject prefab = null;
 
                     if (Defines.Gem.random == gem.Value)
-                        prefab = DICT_PRFB_Tiles[Defines.Gem.random];
+                    {
+                        //prefab = DICT_PRFB_Tiles[Defines.Gem.random];
+                        var rnd = Random.Range(1, (int)Defines.Gem.yellow + 1);
+                        prefab = DICT_PRFB_Tiles[(Defines.Gem)rnd];
+                    }
                     else
                         prefab = DICT_PRFB_Tiles[gem.Value];
 
