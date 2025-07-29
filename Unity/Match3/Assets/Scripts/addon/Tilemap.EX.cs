@@ -62,14 +62,22 @@ namespace LLOYD.Match3.Addon
                         }
                     }
                 }
-                Debug.Log($"Stage.Loop_Tiles_byGetTile(): gem 개수= {count}");
+                //Debug.Log($"Stage.Loop_Tiles_byGetTile(): gem 개수= {count}");
                 return ret;
             }
-            public static void Loop_Tiles_byGrid(this UnityEngine.Tilemaps.Tilemap __timlemap, Grid __grid)
+
+            public class GemDesignValue
+            {
+                public Defines.Gem type;
+                public Vector3 pos_wolrd = Vector3.zero;
+            }
+            public static Dictionary<Vector3Int, GemDesignValue> Loop_Tiles_byGrid(this UnityEngine.Tilemaps.Tilemap __timlemap, Grid __grid)
             {
                 // 타일맵 전체 크기 가져오기
                 BoundsInt bounds = __timlemap.cellBounds;
                 //var grid = this.GetComponent<Grid>();
+
+                var ret = new Dictionary<Vector3Int, GemDesignValue>();
 
                 // 월드 좌표 순회 예시
                 int count = 0;
@@ -80,22 +88,29 @@ namespace LLOYD.Match3.Addon
                         Vector3Int cellPosition = new Vector3Int(x, y, 0);
                         Vector3 worldPosition = __grid.GetCellCenterWorld(cellPosition);
 
-
                         // 월드 좌표에서 타일 처리 로직
                         //string strlog = $"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}";
 
                         var tile = __timlemap.GetTile(cellPosition) as GemTile;
                         if (tile != null)
                         {
-                            //if (!tile.name.Contains("Random"))
+                            if (!tile.name.Contains("Random"))
                                 Debug.Log($"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}, 타일 이름: {tile.name} (Type: {tile.TYPE})");
                             count += 1;
+
+                            var data = new GemDesignValue() {
+                                type= tile.TYPE,
+                                pos_wolrd= worldPosition
+                            };
+                            ret.Add(cellPosition, data);
                         }
 
                         //Debug.Log(strlog);
                     }
                 }
                 Debug.Log($"Stage.Loop_Tiles_byGrid(): gem 개수= {count}");
+
+                return ret;
             }
 
             public static void Erasse_Gem(this UnityEngine.Tilemaps.Tilemap __timlemap, Vector3Int __pos)

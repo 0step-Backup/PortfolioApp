@@ -30,8 +30,10 @@ namespace LLOYD.Match3
         void Make_Gems()
         {
             //TMAP_Gems.Loop_Tiles();//[Sprite_GreenItem] (3, 5)
-            var gems = TMAP_Gems.Loop_Tiles_byGetTile();//[Sprite_GreenItem] (-1, 1)
-            //TMAP_Gems.Loop_Tiles_byGrid(this.GetComponent<Grid>());//[Sprite_GreenItem] 셀 위치: (-1, 1), 월드 위치: (-0.50, 1.50, 0.00)
+            //var gems = TMAP_Gems.Loop_Tiles_byGetTile();//[Sprite_GreenItem] (-1, 1)
+            var gems = TMAP_Gems.Loop_Tiles_byGrid(this.GetComponent<Grid>());//[Sprite_GreenItem] 셀 위치: (-1, 1), 월드 위치: (-0.50, 1.50, 0.00)
+
+            //{ return; }//DEV TEST
 
             //Debug.Log(gems.Count);
             TMAP_Gems.ClearAllTiles();
@@ -40,18 +42,21 @@ namespace LLOYD.Match3
                 {
                     GameObject prefab = null;
 
-                    if (Defines.Gem.random == gem.Value)
+                    if (Defines.Gem.random == gem.Value.type)
                     {
                         //prefab = DICT_PRFB_Tiles[Defines.Gem.random];
                         var rnd = Random.Range(1, (int)Defines.Gem.yellow + 1);
                         prefab = DICT_PRFB_Tiles[(Defines.Gem)rnd];
                     }
                     else
-                        prefab = DICT_PRFB_Tiles[gem.Value];
+                        prefab = DICT_PRFB_Tiles[gem.Value.type];
 
-                    var newgem = Instantiate(prefab, TRSF_Gems);
-                    newgem.transform.position = new Vector3(gem.Key.x + 0.5f, gem.Key.y + 0.5f, 0f);
-                    newgem.name = $"[{gem.Key.x}, {gem.Key.y}] {gem.Value}";
+                    if (null != prefab)
+                    {
+                        var newgem = Instantiate(prefab, TRSF_Gems);
+                        newgem.transform.position = gem.Value.pos_wolrd;
+                        newgem.name = $"[{gem.Key.x}, {gem.Key.y}] {gem.Value.type}";
+                    }
                 }
             }
         }
