@@ -2809,7 +2809,7 @@ GameObject:
   - component: {fileID: 1590828672}
   - component: {fileID: 1590828674}
   m_Layer: 0
-  m_Name: Stage.Design
+  m_Name: LevelDesign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2854,7 +2854,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1590828671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4be13fb899a6664e8f81aa9c1d66d66, type: 3}
+  m_Script: {fileID: 11500000, guid: acecba8015034924faed3c1637c6afca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TMAP_Gems: {fileID: 1106520704}
