@@ -21,6 +21,14 @@ namespace LLOYD.Match3
         {
             Debug.Log($"Board.Start(): TMAP_Gems= {TMAP_Gems.GetUsedTilesCount()}");
 
+            Make_Gems();
+
+            //TMAP_Gems.Erasse_Gem(new Vector3Int(0, 1, 0));
+            //TMAP_Gems.Erasse_Gem(new Vector3Int(1, 2, 0));
+        }
+
+        void Make_Gems()
+        {
             //TMAP_Gems.Loop_Tiles();//[Sprite_GreenItem] (3, 5)
             var gems = TMAP_Gems.Loop_Tiles_byGetTile();//[Sprite_GreenItem] (-1, 1)
             //TMAP_Gems.Loop_Tiles_byGrid(this.GetComponent<Grid>());//[Sprite_GreenItem] 셀 위치: (-1, 1), 월드 위치: (-0.50, 1.50, 0.00)
@@ -46,9 +54,6 @@ namespace LLOYD.Match3
                     newgem.name = $"[{gem.Key.x}, {gem.Key.y}] {gem.Value}";
                 }
             }
-
-            //TMAP_Gems.Erasse_Gem(new Vector3Int(0, 1, 0));
-            //TMAP_Gems.Erasse_Gem(new Vector3Int(1, 2, 0));
         }
 
         // Update is called once per frame
