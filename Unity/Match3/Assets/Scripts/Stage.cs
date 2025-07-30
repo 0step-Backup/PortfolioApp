@@ -4,6 +4,7 @@ namespace LLOYD.Match3
 {
     using AYellowpaper.SerializedCollections;
     using LLOYD.Match3.Common;
+    using LLOYD.Match3.Node;
 
     public class Stage : MonoBehaviour
     {
@@ -14,8 +15,7 @@ namespace LLOYD.Match3
         [SerializeField]
         SerializedDictionary<Defines.Gem, Sprite> DICT_Gem_Sprites = null;
 
-        bool _is_picked = false;
-        Vector3 _cellv3_pick = Vector3.zero;
+        Gem _pickGem = null;
 
         // Start is called before the first frame update
         void Start()
@@ -50,15 +50,18 @@ namespace LLOYD.Match3
         {
             //Debug.Log($"<color=red>Stage.Enter_Gem</color>({__gem.transform.position})");
 
-            if(_is_picked
-                && _cellv3_pick != __gem.transform.position
-                )
+            if(_pickGem
+                && _pickGem != __gem)
             {
                 //if(인접한 블럭이면)
                 //matching
 
-                _is_picked = false;
-                Debug.Log($"<color=cyan>target gem: {__gem.TYPE}</color>, ({_cellv3_pick.x}, {_cellv3_pick.y})");
+                var pos_pick = _pickGem.transform.position;
+                _pickGem.transform.position = __gem.transform.position;
+                __gem.transform.position = pos_pick;
+
+                _pickGem = null;
+                Debug.Log($"<color=cyan>target gem: {__gem.TYPE}</color>, ({__gem.transform.position.x}, {__gem.transform.position.y})");
             }
         }
         public void Out_Gem(Node.Gem __gem)
@@ -70,12 +73,11 @@ namespace LLOYD.Match3
         {
             //Debug.Log($"<color=green>Stage.Push_Gem</color>({__gem.transform.position})");
 
-            if (!_is_picked)
+            if (!_pickGem)
             {
-                _is_picked = true;
+                _pickGem = __gem;
 
-                _cellv3_pick = __gem.transform.position;
-                Debug.Log($"<color=green>pick gem: {__gem.TYPE}</color>, ({_cellv3_pick.x}, {_cellv3_pick.y})");
+                Debug.Log($"<color=green>pick gem: {__gem.TYPE}</color>, ({__gem.transform.position.x}, {__gem.transform.position.y})");
             }
         }
 
@@ -83,11 +85,11 @@ namespace LLOYD.Match3
         {
             //Debug.Log($"<color=black>Stage.Release_Gem</color>({__gem.transform.position})");
 
-            if(_is_picked &&
-                _cellv3_pick == __gem.transform.position)
+            if (_pickGem &&
+                _pickGem == __gem)
             {
-                _is_picked = false;
-                Debug.Log($"<color=grey>pick release gem: {__gem.TYPE}</color>, ({_cellv3_pick.x}, {_cellv3_pick.y})");
+                _pickGem = null;
+                Debug.Log($"<color=grey>pick release gem: {__gem.TYPE}</color>, ({__gem.transform.position.x}, {__gem.transform.position.y})");
             }
         }
 
