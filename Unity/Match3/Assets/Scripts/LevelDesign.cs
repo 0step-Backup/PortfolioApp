@@ -42,20 +42,23 @@ namespace LLOYD.Match3
                 {
                     GameObject prefab = null;
 
-                    if (Defines.Gem.random == gem.Value.type)
+                    var type = gem.Value.type;
+                    var pos = gem.Value.pos_wolrd;
+
+                    if (Defines.Gem.random == type)
                     {
                         //prefab = DICT_PRFB_Tiles[Defines.Gem.random];
                         var rnd = Random.Range(1, (int)Defines.Gem.yellow + 1);
                         prefab = DICT_PRFB_Tiles[(Defines.Gem)rnd];
                     }
                     else
-                        prefab = DICT_PRFB_Tiles[gem.Value.type];
+                        prefab = DICT_PRFB_Tiles[type];
 
                     if (null != prefab)
                     {
                         var newgem = Instantiate(prefab, TRSF_Gems);
-                        newgem.transform.position = gem.Value.pos_wolrd;
-                        newgem.name = $"[{gem.Key.x}, {gem.Key.y}] {gem.Value.type}";
+                        newgem.transform.position = pos;
+                        newgem.name = $"[{gem.Key.x}, {gem.Key.y}] {type}";
                     }
                 }
             }
