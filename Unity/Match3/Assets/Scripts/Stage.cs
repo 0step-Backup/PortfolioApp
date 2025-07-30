@@ -3,6 +3,7 @@ using UnityEngine;
 namespace LLOYD.Match3
 {
     using AYellowpaper.SerializedCollections;
+
     using LLOYD.Match3.Common;
     using LLOYD.Match3.Node;
 
@@ -57,8 +58,10 @@ namespace LLOYD.Match3
                 //matching
 
                 var pos_pick = _pickGem.transform.position;
-                _pickGem.transform.position = __gem.transform.position;
-                __gem.transform.position = pos_pick;
+                var pos_target = __gem.transform.position;
+
+                _pickGem.Move(pos_target);
+                __gem.Move(pos_pick);
 
                 _pickGem = null;
                 Debug.Log($"<color=cyan>target gem: {__gem.TYPE}</color>, ({__gem.transform.position.x}, {__gem.transform.position.y})");

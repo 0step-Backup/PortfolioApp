@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace LLOYD.Match3.Node
 {
+    using DG.Tweening;
+
     using LLOYD.Match3.Common;
 
     public class Gem : MonoBehaviour
@@ -22,6 +24,11 @@ namespace LLOYD.Match3.Node
             _type = __type;
 
             this.GetComponent<SpriteRenderer>().sprite = __sprite;
+        }
+
+        public void Move(Vector3 __pos)
+        {
+            this.transform.DOMove(__pos, 0.2f);
         }
 
         void OnMouseEnter() => _stage.Enter_Gem(this);
