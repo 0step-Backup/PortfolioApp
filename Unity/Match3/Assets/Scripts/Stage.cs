@@ -8,10 +8,15 @@ namespace LLOYD.Match3
     public class Stage : MonoBehaviour
     {
         [SerializeField] GameObject PRFB_Gem = null;
+        [SerializeField] Transform TRSF_Gems = null;
 
         [SerializedDictionary("Defines.Gem", "스프라이트")]
         [SerializeField]
         SerializedDictionary<Defines.Gem, Sprite> DICT_Gem_Sprites = null;
+
+        bool _is_picked = false;
+        Vector3 _cellv3_pick = Vector3.zero;
+        Vector3 _cellv3_target = Vector3.zero;
 
         // Start is called before the first frame update
         void Start()
@@ -27,25 +32,49 @@ namespace LLOYD.Match3
 
             if (Defines.Gem.random == type)
             {
-                ////prefab = DICT_PRFB_Tiles[Defines.Gem.random];
-                //var rnd = Random.Range(1, (int)Defines.Gem.yellow + 1);
-                //sprite = DICT_Gem_Sprites[(Defines.Gem)rnd];
-
                 type = (Defines.Gem)Random.Range(1, (int)Defines.Gem.yellow + 1);
             }
-            //else
-            //    sprite = DICT_Gem_Sprites[type];
 
             sprite = DICT_Gem_Sprites[type];
 
             if (null != sprite)
             {
-                var newgem = Instantiate(PRFB_Gem, this.transform);
+                var newgem = Instantiate(PRFB_Gem, TRSF_Gems);
                 newgem.transform.position = pos_world;
                 newgem.name = $"[{__pos_cell.x}, {__pos_cell.y}] {type}";
 
-                newgem.GetComponent<Node.Gem>().Setup(type, sprite);
+                newgem.GetComponent<Node.Gem>().Setup(this, type, sprite);
             }
+        }
+
+        public void Enter_Gem(Node.Gem __gem)
+        {
+            Debug.Log($"<color=red>Stage.Enter_Gem</color>({__gem.transform.position})");
+
+            if(_is_picked)
+            {
+            }
+        }
+        public void Out_Gem(Node.Gem __gem)
+        {
+            Debug.Log($"<color=grey>Stage.Out_Gem</color>({__gem.transform.position})");
+        }
+
+        public void Push_Gem(Node.Gem __gem)
+        {
+            Debug.Log($"<color=green>Stage.Push_Gem</color>({__gem.transform.position})");
+
+            if (!_is_picked)
+            {
+                _is_picked = true;
+
+                _cellv3_pick = __gem.transform.position;                
+            }
+        }
+
+        public void Release_Gem(Node.Gem __gem)
+        {
+            Debug.Log($"<color=black>Stage.Release_Gem</color>({__gem.transform.position})");
         }
 
         // Update is called once per frame

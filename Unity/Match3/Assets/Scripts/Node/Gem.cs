@@ -6,6 +6,8 @@ namespace LLOYD.Match3.Node
 
     public class Gem : MonoBehaviour
     {
+        Stage _stage = null;
+
         Defines.Gem _type = Defines.Gem.NONE;
         public Defines.Gem TYPE => _type;
 
@@ -14,20 +16,17 @@ namespace LLOYD.Match3.Node
         {
         }
 
-        public void Setup(Defines.Gem __type, Sprite __sprite)
+        public void Setup(Stage __stage, Defines.Gem __type, Sprite __sprite)
         {
+            _stage = __stage;
             _type = __type;
 
             this.GetComponent<SpriteRenderer>().sprite = __sprite;
         }
 
-        void OnMouseEnter()
-        {
-            //Debug.Log($"OnMouseEnter({_type})");
-        }
-
-        void OnMouseDown() => Debug.Log($"OnMouseDown({_type})");
-
-        void OnMouseUp() => Debug.Log($"OnMouseUp({_type})");
+        void OnMouseEnter() => _stage.Enter_Gem(this);
+        void OnMouseExit() => _stage.Out_Gem(this);
+        void OnMouseDown() => _stage.Push_Gem(this);
+        void OnMouseUp() => _stage.Release_Gem(this);
     }
 }
