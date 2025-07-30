@@ -10,6 +10,12 @@ namespace LLOYD.Match3.Addon
         using LLOYD.Match3.Types;
         using System.Collections.Generic;
 
+        public class GemDesignValue
+        {
+            public Defines.Gem type;
+            public Vector3 pos_wolrd = Vector3.zero;
+        }
+
         static class Extensions
         {
             public static void Loop_Tiles(this UnityEngine.Tilemaps.Tilemap __timlemap)
@@ -66,11 +72,6 @@ namespace LLOYD.Match3.Addon
                 return ret;
             }
 
-            public class GemDesignValue
-            {
-                public Defines.Gem type;
-                public Vector3 pos_wolrd = Vector3.zero;
-            }
             public static Dictionary<Vector3Int, GemDesignValue> Loop_Tiles_byGrid(this UnityEngine.Tilemaps.Tilemap __timlemap, Grid __grid)
             {
                 // 타일맵 전체 크기 가져오기
@@ -94,8 +95,8 @@ namespace LLOYD.Match3.Addon
                         var tile = __timlemap.GetTile(cellPosition) as GemTile;
                         if (tile != null)
                         {
-                            if (!tile.name.Contains("Random"))
-                                Debug.Log($"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}, 타일 이름: {tile.name} (Type: {tile.TYPE})");
+                            //if (!tile.name.Contains("Random"))
+                            //    Debug.Log($"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}, 타일 이름: {tile.name} (Type: {tile.TYPE})");
                             count += 1;
 
                             var data = new GemDesignValue() {

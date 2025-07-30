@@ -11,10 +11,7 @@ namespace LLOYD.Match3
     {
         [SerializeField] Tilemap TMAP_Gems = null;
 
-        [SerializeField] Transform TRSF_Gems = null;
-
-        [SerializedDictionary("Defines.Gem", "Prefab")] [SerializeField]
-        SerializedDictionary<Defines.Gem, GameObject> DICT_PRFB_Tiles = null;
+        [SerializeField] Stage _stage = null;
 
         // Start is called before the first frame update
         void Start()
@@ -40,26 +37,10 @@ namespace LLOYD.Match3
             {
                 foreach (var gem in gems)
                 {
-                    GameObject prefab = null;
-
                     var type = gem.Value.type;
                     var pos = gem.Value.pos_wolrd;
 
-                    if (Defines.Gem.random == type)
-                    {
-                        //prefab = DICT_PRFB_Tiles[Defines.Gem.random];
-                        var rnd = Random.Range(1, (int)Defines.Gem.yellow + 1);
-                        prefab = DICT_PRFB_Tiles[(Defines.Gem)rnd];
-                    }
-                    else
-                        prefab = DICT_PRFB_Tiles[type];
-
-                    if (null != prefab)
-                    {
-                        var newgem = Instantiate(prefab, TRSF_Gems);
-                        newgem.transform.position = pos;
-                        newgem.name = $"[{gem.Key.x}, {gem.Key.y}] {type}";
-                    }
+                    _stage.Add_Gem(gem.Key, gem.Value);
                 }
             }
         }
