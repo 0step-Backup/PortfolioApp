@@ -4,10 +4,14 @@ using UnityEngine.Tilemaps;
 namespace LLOYD.Match3
 {
     using Addon.Tilemap;
+    using LLOYD.Match3.Types;
 
     public class LevelDesign : MonoBehaviour
     {
+        [SerializeField] Grid _grid = null;
+
         [SerializeField] Tilemap TMAP_Gems = null;
+        [SerializeField] Tilemap TMAP_Guide = null;
 
         [SerializeField] Stage _stage = null;
 
@@ -21,6 +25,8 @@ namespace LLOYD.Match3
 
             Make_Gems();
 
+            Check_RegenCells();
+
             //TMAP_Gems.Erasse_Gem(new Vector3Int(0, 1, 0));
             //TMAP_Gems.Erasse_Gem(new Vector3Int(1, 2, 0));
         }
@@ -28,8 +34,8 @@ namespace LLOYD.Match3
         void Make_Gems()
         {
             //TMAP_Gems.Loop_Tiles();//[Sprite_GreenItem] (3, 5)
-            //var gems = TMAP_Gems.Loop_Tiles_byGetTile();//[Sprite_GreenItem] (-1, 1)
-            var gems = TMAP_Gems.Loop_Tiles_byGrid(this.GetComponent<Grid>());//[Sprite_GreenItem] 셀 위치: (-1, 1), 월드 위치: (-0.50, 1.50, 0.00)
+            //var gems = TMAP_Gems.Loop_Tiles_byGetTile();//[Sprite_GreenItem] (-1, 1)            
+            var gems = TMAP_Gems.Loop_Tiles_byGrid(_grid, typeof(GemTile));//[Sprite_GreenItem] 셀 위치: (-1, 1), 월드 위치: (-0.50, 1.50, 0.00)
 
             //{ return; }//DEV TEST
 
@@ -44,6 +50,19 @@ namespace LLOYD.Match3
                     _stage.Add_Gem(gem.Key, gem.Value);
                 }
             }
+        }
+
+        void Check_RegenCells()
+        {
+            var regens = TMAP_Guide.Loop_Tiles_byGrid(_grid, typeof(TileBase));
+            
+            string strlog = $"LevelDesign.Check_RegenCells(): {regens.Count} 개";
+            foreach (var item in regens)
+            {
+                var pos = item.Value.pos_wolrd;
+                strlog += $"\n\t [{item.Key.x}, {item.Key.y}] world 좌표 {pos.x}, {pos.y}";
+            }
+            Debug.Log(strlog);
         }
 
         // Update is called once per frame
