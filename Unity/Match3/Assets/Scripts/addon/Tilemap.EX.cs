@@ -1,4 +1,7 @@
 
+using System;
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -8,7 +11,6 @@ namespace LLOYD.Match3.Addon
     {
         using LLOYD.Match3.Common;
         using LLOYD.Match3.Types;
-        using System.Collections.Generic;
 
         public class GemDesignValue
         {
@@ -72,13 +74,15 @@ namespace LLOYD.Match3.Addon
                 return ret;
             }
 
-            public static Dictionary<Vector3Int, GemDesignValue> Loop_Tiles_byGrid(this UnityEngine.Tilemaps.Tilemap __timlemap, Grid __grid)
+            public static Dictionary<Vector3Int, GemDesignValue> Loop_Tiles_byGrid(this UnityEngine.Tilemaps.Tilemap __timlemap, Grid __grid
+                , Type __tileType)
             {
                 // 타일맵 전체 크기 가져오기
                 BoundsInt bounds = __timlemap.cellBounds;
+                //Debug.Log($"<cellBounds> x: {bounds.xMin} ~ {bounds.xMax}, y: {bounds.yMin} ~ {bounds.yMax}");
                 //var grid = this.GetComponent<Grid>();
 
-                var ret = new Dictionary<Vector3Int, GemDesignValue>();
+                var ret = new Dictionary<Vector3Int, GemDesignValue>();                
 
                 // 월드 좌표 순회 예시
                 int count = 0;
@@ -92,19 +96,33 @@ namespace LLOYD.Match3.Addon
                         // 월드 좌표에서 타일 처리 로직
                         //string strlog = $"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}";
 
-                        var tile = __timlemap.GetTile(cellPosition) as GemTile;
-                        if (tile != null)
+                        var tile = __timlemap.GetTile(cellPosition);
+                        if (null != tile)
                         {
+                            var type = Defines.Gem.NONE;
+
+                            //바꾸려는 코드
+                            if (__tileType == typeof(GemTile))
+                            {
+                                type = ((GemTile)tile).TYPE;
+                            }
+                            //else {}
+
                             //if (!tile.name.Contains("Random"))
                             //    Debug.Log($"셀 위치: ({x}, {y}), 월드 위치: {worldPosition}, 타일 이름: {tile.name} (Type: {tile.TYPE})");
                             count += 1;
 
                             var data = new GemDesignValue() {
-                                type= tile.TYPE,
-                                pos_wolrd= worldPosition
+                                type = type,
+                                pos_wolrd = worldPosition
                             };
                             ret.Add(cellPosition, data);
                         }
+                        //else
+                        //{
+                        //    //if (__tileType != typeof(GemTile))
+                        //        Debug.Log($"XXX 없는 셀 위치: ({x}, {y}), 월드 위치: {worldPosition}");
+                        //}
 
                         //Debug.Log(strlog);
                     }
