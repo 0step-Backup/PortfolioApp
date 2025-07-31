@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -5,7 +7,7 @@ namespace LLOYD.Match3
 {
     using AYellowpaper.SerializedCollections;
 
-    using LLOYD.Match3.Common;
+    using LLOYD.Match3.Common;    
 
     //using Addon.Tilemap;
 
@@ -20,6 +22,8 @@ namespace LLOYD.Match3
 
         Tilemap _tilemap = null;
 
+        Dictionary<Vector3Int, Vector3> _regenCells = null;
+
         Node.Gem _pickGem = null;
 
         // Start is called before the first frame update
@@ -27,9 +31,17 @@ namespace LLOYD.Match3
         {
         }
 
-        public void Setup(Tilemap __tilemap)
+        public void Setup(Tilemap __tilemap, Dictionary<Vector3Int, Vector3> __regenCells)
         {
             _tilemap = __tilemap;
+
+            _regenCells = __regenCells;
+            //{//DEV LOG
+            //    string strlog = $"RegenCells {__regenCells.Count} 개";
+            //    foreach (var item in __regenCells)
+            //        strlog += $"\n\t [{item.Key.x}, {item.Key.y}] world 좌표 {item.Value.x}, {item.Value.y}";
+            //    Debug.Log(strlog);
+            //}
         }
 
         public void Add_Gem(Vector3Int __pos_cell, Addon.Tilemap.GemDesignValue __gemvalue)
@@ -127,7 +139,7 @@ namespace LLOYD.Match3
             }
         }
 
-        // Update is called once per frame
-        void Update() {}
+        //// Update is called once per frame
+        //void Update() {}
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -21,11 +23,9 @@ namespace LLOYD.Match3
             //Debug.Log($"Board.Start(): TMAP_Gems= {TMAP_Gems.GetUsedTilesCount()}");
             ////사용하는 타일 종류의 개수
 
-            _stage.Setup(TMAP_Gems);
+            _stage.Setup(TMAP_Gems, Check_RegenCells());
 
             Make_Gems();
-
-            Check_RegenCells();
 
             //TMAP_Gems.Erasse_Gem(new Vector3Int(0, 1, 0));
             //TMAP_Gems.Erasse_Gem(new Vector3Int(1, 2, 0));
@@ -52,22 +52,22 @@ namespace LLOYD.Match3
             }
         }
 
-        void Check_RegenCells()
+        Dictionary<Vector3Int, Vector3> Check_RegenCells()
         {
             var regens = TMAP_Guide.Loop_Tiles_byGrid(_grid, typeof(TileBase));
-            
-            string strlog = $"LevelDesign.Check_RegenCells(): {regens.Count} 개";
+            var ret = new Dictionary<Vector3Int, Vector3>();
+
             foreach (var item in regens)
             {
                 var pos = item.Value.pos_wolrd;
-                strlog += $"\n\t [{item.Key.x}, {item.Key.y}] world 좌표 {pos.x}, {pos.y}";
+                ret.Add(item.Key, pos);
             }
-            Debug.Log(strlog);
+
+            TMAP_Guide.ClearAllTiles();
+            return ret;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        }
+        //// Update is called once per frame
+        //void Update() {}
     }
 }
