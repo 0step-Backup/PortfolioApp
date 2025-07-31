@@ -69,7 +69,12 @@ namespace LLOYD.Match3
             var pos_cell1 = _tilemap.WorldToCell(gem1.transform.position);
             var pos_cell2 = _tilemap.WorldToCell(gem2.transform.position);
 
-            return Vector3.Distance(pos_cell1, pos_cell2) <= 1f;
+            bool isAdjacent = Mathf.Abs(pos_cell1.x - pos_cell2.x) +
+                             Mathf.Abs(pos_cell1.y - pos_cell2.y) == 1;
+
+            Debug.Log($"Adjacent Check: ({pos_cell1.x},{pos_cell1.y}) vs ({pos_cell2.x},{pos_cell2.y}) = {isAdjacent}");
+
+            return isAdjacent;
         }
 
         public void Enter_Gem(Node.Gem __gem)
