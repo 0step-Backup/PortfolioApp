@@ -29,6 +29,7 @@ namespace LLOYD.Match3.Node
         public void Move(Vector3 __pos)
         {
             this.transform.DOMove(__pos, 0.2f)
+                //.SetEase(Ease.OutBack)
                 .OnComplete(() => {
                     //Debug.Log($"{_type}");
                 });
