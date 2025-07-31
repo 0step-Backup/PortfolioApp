@@ -47,6 +47,11 @@ namespace LLOYD.Match3
             }
         }
 
+        bool IsAdjacent(Vector3 pos1, Vector3 pos2)
+        {
+            return Vector3.Distance(pos1, pos2) <= 1f;
+        }
+
         public void Enter_Gem(Node.Gem __gem)
         {
             //Debug.Log($"<color=red>Stage.Enter_Gem</color>({__gem.transform.position})");
@@ -54,12 +59,14 @@ namespace LLOYD.Match3
             if(_pickGem
                 && _pickGem != __gem)
             {
-                //if(인접한 블럭이면)
-                //matching
-
                 var pos_pick = _pickGem.transform.position;
                 var pos_target = __gem.transform.position;
 
+                
+                if (!IsAdjacent(pos_pick, pos_target))//인접한 블럭 체크
+                    return;
+
+                //matching
                 _pickGem.Move(pos_target);
                 __gem.Move(pos_pick);
 
