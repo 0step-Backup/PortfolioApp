@@ -26,13 +26,16 @@ namespace LLOYD.Match3.Node
             this.GetComponent<SpriteRenderer>().sprite = __sprite;
         }
 
-        public void Move(Vector3 __pos)
+        const float SwapMovingTime = 0.2f;
+        public float Move(Vector3 __pos)
         {
-            this.transform.DOMove(__pos, 0.2f)
+            this.transform.DOMove(__pos, SwapMovingTime)
                 //.SetEase(Ease.OutBack)
                 .OnComplete(() => {
                     //Debug.Log($"{_type}");
                 });
+
+            return SwapMovingTime;
         }
 
         void OnMouseEnter() => _stage.Enter_Gem(this);
