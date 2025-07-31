@@ -4,8 +4,6 @@ using UnityEngine.Tilemaps;
 namespace LLOYD.Match3
 {
     using Addon.Tilemap;
-    using AYellowpaper.SerializedCollections;
-    using LLOYD.Match3.Common;
 
     public class LevelDesign : MonoBehaviour
     {
@@ -16,7 +14,10 @@ namespace LLOYD.Match3
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log($"Board.Start(): TMAP_Gems= {TMAP_Gems.GetUsedTilesCount()}");
+            //Debug.Log($"Board.Start(): TMAP_Gems= {TMAP_Gems.GetUsedTilesCount()}");
+            ////사용하는 타일 종류의 개수
+
+            _stage.Setup(TMAP_Gems);
 
             Make_Gems();
 

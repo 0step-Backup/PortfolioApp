@@ -109,10 +109,14 @@ namespace LLOYD.Match3.Addon
                         //Debug.Log(strlog);
                     }
                 }
-                Debug.Log($"Stage.Loop_Tiles_byGrid(): gem 개수= {count}");
+                //Debug.Log($"Stage.Loop_Tiles_byGrid(): gem 개수= {count}");
 
                 return ret;
             }
+
+            ////World 좌표값에서 Grid 기준의 Cell 좌표값 리턴
+            //public static Vector3Int Get_CellPosition_byWorldPosition(this UnityEngine.Tilemaps.Tilemap __timlemap, Vector3 __worldposition)
+            //    => __timlemap.WorldToCell(__worldposition);
 
             public static void Erasse_Gem(this UnityEngine.Tilemaps.Tilemap __timlemap, Vector3Int __pos)
             {

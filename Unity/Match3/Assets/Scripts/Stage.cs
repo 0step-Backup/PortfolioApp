@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace LLOYD.Match3
 {
@@ -6,6 +7,7 @@ namespace LLOYD.Match3
 
     using LLOYD.Match3.Common;
     using LLOYD.Match3.Node;
+    using Addon.Tilemap;
 
     public class Stage : MonoBehaviour
     {
@@ -16,11 +18,18 @@ namespace LLOYD.Match3
         [SerializeField]
         SerializedDictionary<Defines.Gem, Sprite> DICT_Gem_Sprites = null;
 
+        Tilemap _tilemap = null;
+
         Gem _pickGem = null;
 
         // Start is called before the first frame update
         void Start()
         {
+        }
+
+        public void Setup(Tilemap __tilemap)
+        {
+            _tilemap = __tilemap;
         }
 
         public void Add_Gem(Vector3Int __pos_cell, Addon.Tilemap.GemDesignValue __gemvalue)
@@ -44,6 +53,13 @@ namespace LLOYD.Match3
                 newgem.name = $"[{__pos_cell.x}, {__pos_cell.y}] {type}";
 
                 newgem.GetComponent<Node.Gem>().Setup(this, type, sprite);
+
+                //{
+                //    //var pos_cell = _tilemap.WorldToCell(pos_world);
+                //    pos_world = new Vector3(pos_world.x - 0.2f, pos_world.y + 0.2f);
+                //    var pos_cell = _tilemap.Get_CellPosition_byWorldPosition(pos_world);
+                //    Debug.Log($"[{pos_cell.x}, {pos_cell.y}] {type}: world position= {pos_world.x}, {pos_world.y}");
+                //}
             }
         }
 
