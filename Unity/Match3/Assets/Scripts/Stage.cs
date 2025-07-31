@@ -6,8 +6,8 @@ namespace LLOYD.Match3
     using AYellowpaper.SerializedCollections;
 
     using LLOYD.Match3.Common;
-    using LLOYD.Match3.Node;
-    using Addon.Tilemap;
+
+    //using Addon.Tilemap;
 
     public class Stage : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace LLOYD.Match3
 
         Tilemap _tilemap = null;
 
-        Gem _pickGem = null;
+        Node.Gem _pickGem = null;
 
         // Start is called before the first frame update
         void Start()
@@ -63,9 +63,13 @@ namespace LLOYD.Match3
             }
         }
 
-        bool IsAdjacent(Vector3 pos1, Vector3 pos2)
+        //bool IsAdjacent(Vector3 pos1, Vector3 pos2) => Vector3.Distance(pos1, pos2) <= 1f;
+        bool IsAdjacent(Node.Gem gem1, Node.Gem gem2)
         {
-            return Vector3.Distance(pos1, pos2) <= 1f;
+            var pos_cell1 = _tilemap.WorldToCell(gem1.transform.position);
+            var pos_cell2 = _tilemap.WorldToCell(gem2.transform.position);
+
+            return Vector3.Distance(pos_cell1, pos_cell2) <= 1f;
         }
 
         public void Enter_Gem(Node.Gem __gem)
@@ -78,8 +82,7 @@ namespace LLOYD.Match3
                 var pos_pick = _pickGem.transform.position;
                 var pos_target = __gem.transform.position;
 
-                
-                if (!IsAdjacent(pos_pick, pos_target))//인접한 블럭 체크
+                if (!IsAdjacent(_pickGem, __gem))//인접한 블럭 체크
                     return;
 
                 //matching
