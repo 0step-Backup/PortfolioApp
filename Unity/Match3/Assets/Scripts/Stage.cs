@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+//using System.Linq;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -22,6 +23,7 @@ namespace LLOYD.Match3
 
         Tilemap _tilemap = null;
 
+        //Dictionary<Vector3Int, Node.Gem> _gems = new Dictionary<Vector3Int, Node.Gem>();
         Dictionary<Vector3Int, Vector3> _regenCells = null;
 
         Node.Gem _pickGem = null;
@@ -42,6 +44,8 @@ namespace LLOYD.Match3
             //        strlog += $"\n\t [{item.Key.x}, {item.Key.y}] world 좌표 {item.Value.x}, {item.Value.y}";
             //    Debug.Log(strlog);
             //}
+
+            //_gems.Clear();
         }
 
         public void Add_Gem(Vector3Int __pos_cell, Addon.Tilemap.GemDesignValue __gemvalue)
@@ -64,7 +68,9 @@ namespace LLOYD.Match3
                 newgem.transform.position = pos_world;
                 newgem.name = $"[{__pos_cell.x}, {__pos_cell.y}] {type}";
 
-                newgem.GetComponent<Node.Gem>().Setup(this, type, sprite);
+                var cs_newgem = newgem.GetComponent<Node.Gem>();
+                cs_newgem.Setup(this, type, sprite);
+                //_gems.Add(__pos_cell, cs_newgem);
 
                 //{
                 //    //var pos_cell = _tilemap.WorldToCell(pos_world);
