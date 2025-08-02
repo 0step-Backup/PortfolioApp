@@ -13,6 +13,9 @@ namespace LLOYD.Match3.Node
         Defines.Gem _type = Defines.Gem.NONE;
         public Defines.Gem TYPE => _type;
 
+        bool _isMoving = false;
+        public bool IsMoving => _isMoving;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -29,10 +32,12 @@ namespace LLOYD.Match3.Node
         const float SwapMovingTime = 0.2f;
         public float Move(Vector3 __pos)
         {
+            _isMoving = true;
             this.transform.DOMove(__pos, SwapMovingTime)
                 //.SetEase(Ease.OutBack)
                 .OnComplete(() => {
                     //Debug.Log($"{_type}");
+                    _isMoving = false;
                 });
 
             return SwapMovingTime;
