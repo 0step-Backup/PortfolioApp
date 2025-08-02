@@ -8,7 +8,7 @@ namespace LLOYD.Match3
 {
     using AYellowpaper.SerializedCollections;
 
-    using LLOYD.Match3.Common;    
+    using LLOYD.Match3.Common;
 
     //using Addon.Tilemap;
 
@@ -28,6 +28,8 @@ namespace LLOYD.Match3
 
         Node.Gem _pickGem = null;
 
+        BoundsInt _gridBounds = new BoundsInt();
+
         // Start is called before the first frame update
         void Start()
         {
@@ -38,13 +40,12 @@ namespace LLOYD.Match3
             _tilemap = __tilemap;
 
             _regenCells = __regenCells;
-            //{//DEV LOG
-            //    string strlog = $"RegenCells {__regenCells.Count} 개";
-            //    foreach (var item in __regenCells)
-            //        strlog += $"\n\t [{item.Key.x}, {item.Key.y}] world 좌표 {item.Value.x}, {item.Value.y}";
-            //    Debug.Log(strlog);
-            //}
+            //Debug.Log($"RegenCells Count: {__regenCells.Count}");
 
+            // 그리드 바운드 설정
+            _gridBounds = __tilemap.cellBounds;
+            Debug.Log($"Stage Setup - Grid Bounds: {_gridBounds}, Size: {_gridBounds.size}");
+            
             //_gems.Clear();
         }
 
@@ -79,20 +80,6 @@ namespace LLOYD.Match3
                 //    Debug.Log($"[{pos_cell.x}, {pos_cell.y}] {type}: world position= {pos_world.x}, {pos_world.y}");
                 //}
             }
-        }
-
-        //bool IsAdjacent(Vector3 pos1, Vector3 pos2) => Vector3.Distance(pos1, pos2) <= 1f;
-        bool IsAdjacent(Node.Gem gem1, Node.Gem gem2)
-        {
-            var pos_cell1 = _tilemap.WorldToCell(gem1.transform.position);
-            var pos_cell2 = _tilemap.WorldToCell(gem2.transform.position);
-
-            bool isAdjacent = Mathf.Abs(pos_cell1.x - pos_cell2.x) +
-                             Mathf.Abs(pos_cell1.y - pos_cell2.y) == 1;
-
-            Debug.Log($"Adjacent Check: ({pos_cell1.x},{pos_cell1.y}) vs ({pos_cell2.x},{pos_cell2.y}) = {isAdjacent}");
-
-            return isAdjacent;
         }
 
         //// Update is called once per frame

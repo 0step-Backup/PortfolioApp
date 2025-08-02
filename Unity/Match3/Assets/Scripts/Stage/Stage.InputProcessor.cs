@@ -26,6 +26,9 @@ namespace LLOYD.Match3
             //Debug.Log("Exit !!");
             _swap_gems.Clear();
             yield return new WaitForSeconds(0.1f);
+
+            //StartCoroutine(StartChain_AfterSwap(_swap_gems[0], _swap_gems[1]));// 스와이프 완료 후 연쇄 반응 시작
+            StartCoroutine(Process_ChainReaction());
         }
 
         public void Enter_Gem(Node.Gem __gem)
