@@ -16,6 +16,7 @@ namespace LLOYD.Match3
     {
         [SerializeField] GameObject PRFB_Gem = null;
         [SerializeField] Transform TRSF_Gems = null;
+        [SerializeField] Transform TRSF_UnderWorld = null;
 
         [SerializedDictionary("Defines.Gem", "스프라이트")]
         [SerializeField]
