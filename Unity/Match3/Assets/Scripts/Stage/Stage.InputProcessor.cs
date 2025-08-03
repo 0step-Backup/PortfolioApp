@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LLOYD.Match3
@@ -19,6 +20,32 @@ namespace LLOYD.Match3
                 yield return null;
             }
 
+            {//DEBUG LOG
+                string DBGLOG = $"[Swap_Gems] Before Gems ({_gems.Count}):";
+                foreach (var item in _gems)
+                {
+                    DBGLOG += $"\n\t[{item.Key}] {item.Value}";
+                }
+                Debug.Log(DBGLOG);
+            }
+
+            //변경된 위치로 cell 좌표 업데이트
+            var pos_cell1 = _tilemap.WorldToCell(__gem1.transform.position);
+            var pos_cell2 = _tilemap.WorldToCell(__gem2.transform.position);
+
+            _gems[pos_cell1] = __gem1;
+            _gems[pos_cell2] = __gem2;
+            __gem1.Update_Name(pos_cell1);
+            __gem2.Update_Name(pos_cell2);
+
+            {//DEBUG LOG
+                string DBGLOG = $"[Swap_Gems] After Gems ({_gems.Count}):";
+                foreach (var item in _gems)
+                {
+                    DBGLOG += $"\n\t[{item.Key}] {item.Value}";
+                }
+                Debug.Log(DBGLOG);
+            }
             yield return new WaitForSeconds(0.1f);
         }
 

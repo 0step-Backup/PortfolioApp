@@ -23,7 +23,7 @@ namespace LLOYD.Match3
 
         Tilemap _tilemap = null;
 
-        //Dictionary<Vector3Int, Node.Gem> _gems = new Dictionary<Vector3Int, Node.Gem>();
+        Dictionary<Vector3Int, Node.Gem> _gems = new Dictionary<Vector3Int, Node.Gem>();
         Dictionary<Vector3Int, Vector3> _regenCells = null;
 
         Node.Gem _pickGem = null;
@@ -45,8 +45,8 @@ namespace LLOYD.Match3
             // 그리드 바운드 설정
             _gridBounds = __tilemap.cellBounds;
             Debug.Log($"Stage Setup - Grid Bounds: {_gridBounds}, Size: {_gridBounds.size}");
-            
-            //_gems.Clear();
+
+            _gems.Clear();
         }
 
         public void Add_Gem(Vector3Int __pos_cell, Addon.Tilemap.GemDesignValue __gemvalue)
@@ -71,7 +71,8 @@ namespace LLOYD.Match3
 
                 var cs_newgem = newgem.GetComponent<Node.Gem>();
                 cs_newgem.Setup(this, type, sprite);
-                //_gems.Add(__pos_cell, cs_newgem);
+                cs_newgem.Update_Name(__pos_cell);
+                _gems.Add(__pos_cell, cs_newgem);
 
                 //{
                 //    //var pos_cell = _tilemap.WorldToCell(pos_world);

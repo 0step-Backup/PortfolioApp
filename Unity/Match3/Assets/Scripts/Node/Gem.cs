@@ -29,6 +29,11 @@ namespace LLOYD.Match3.Node
             this.GetComponent<SpriteRenderer>().sprite = __sprite;
         }
 
+        public void Update_Name(Vector3Int __pos_cell)
+        {
+            this.name = $"[{__pos_cell.x}, {__pos_cell.y}] {_type}";
+        }
+
         const float SwapMovingTime = 0.2f;
         public float Move(Vector3 __pos)
         {
