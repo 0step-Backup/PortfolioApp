@@ -6,29 +6,20 @@ namespace LLOYD.Match3
 {
     public partial class Stage
     {
-        List<Node.Gem> _swap_gems = new List<Node.Gem>();
-
-        IEnumerator Swap_Gems()
+        IEnumerator Swap_Gems(Node.Gem __gem1, Node.Gem __gem2)
         {
-            Debug.AssertFormat(2 == _swap_gems.Count, "바꿀게 2개가 아니라고?");
+            var pos1 = __gem1.transform.position;
+            var pos2 = __gem2.transform.position;
 
-            var pos1 = _swap_gems[0].transform.position;
-            var pos2 = _swap_gems[1].transform.position;
+            __gem1.Move(pos2);
+            __gem2.Move(pos1);
 
-            _swap_gems[0].Move(pos2);
-            _swap_gems[1].Move(pos1);
-
-            while(_swap_gems[0].IsMoving || _swap_gems[1].IsMoving)
+            while(__gem1.IsMoving || __gem2.IsMoving)
             {
                 yield return null;
             }
 
-            //Debug.Log("Exit !!");
-            _swap_gems.Clear();
             yield return new WaitForSeconds(0.1f);
-
-            //StartCoroutine(StartChain_AfterSwap(_swap_gems[0], _swap_gems[1]));// 스와이프 완료 후 연쇄 반응 시작
-            StartCoroutine(Process_ChainReaction());
         }
 
         public void Enter_Gem(Node.Gem __gem)
@@ -44,11 +35,11 @@ namespace LLOYD.Match3
                 if (!IsAdjacent(_pickGem, __gem))//인접한 블럭 체크
                     return;
 
-                _swap_gems.Add(_pickGem);
-                _swap_gems.Add(__gem);
+                var gem1 = _pickGem;
+                var gem2 = __gem;
                 _pickGem = null;
 
-                StartCoroutine(Swap_Gems());
+                StartCoroutine(Swap_Gems(gem1, gem2));
 
                 ////Debug.Log($"<color=cyan>target gem: {__gem.TYPE}</color>, ({__gem.transform.position.x}, {__gem.transform.position.y})");
             }
