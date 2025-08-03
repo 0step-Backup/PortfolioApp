@@ -13,8 +13,17 @@ namespace LLOYD.Match3.Node
         Defines.Gem _type = Defines.Gem.NONE;
         public Defines.Gem TYPE => _type;
 
+        SpriteRenderer _sprRenderer = null;
+
         bool _isMoving = false;
         public bool IsMoving => _isMoving;
+
+        const float CrashTime = 0.2f;
+
+        private void Awake()
+        {
+            _sprRenderer = this.GetComponent<SpriteRenderer>();
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -26,7 +35,7 @@ namespace LLOYD.Match3.Node
             _stage = __stage;
             _type = __type;
 
-            this.GetComponent<SpriteRenderer>().sprite = __sprite;
+            _sprRenderer.sprite = __sprite;
         }
 
         public void Update_Name(Vector3Int __pos_cell)
@@ -46,6 +55,22 @@ namespace LLOYD.Match3.Node
                 });
 
             return SwapMovingTime;
+        }
+        
+        public float Crash()
+        {
+            var sequence = DOTween.Sequence();
+            {
+                sequence.Append(this.transform.DOScale(0f, CrashTime));
+                sequence.Join(_sprRenderer.DOFade(0f, CrashTime));
+                //sequence.SetEase(Ease.OutExpo);
+                sequence.OnComplete(() => {
+                    Destroy(this.gameObject);
+                });
+            }
+            sequence.Play();
+
+            return CrashTime;
         }
 
         void OnMouseEnter() => _stage.Enter_Gem(this);
