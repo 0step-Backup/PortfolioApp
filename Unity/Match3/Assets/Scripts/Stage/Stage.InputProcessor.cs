@@ -15,19 +15,19 @@ namespace LLOYD.Match3
             __gem1.Move(pos2);
             __gem2.Move(pos1);
 
-            while(__gem1.IsMoving || __gem2.IsMoving)
+            while (__gem1.IsMoving || __gem2.IsMoving)
             {
                 yield return null;
             }
 
-            {//DEBUG LOG
-                string DBGLOG = $"[Swap_Gems] Before Gems ({_gems.Count}):";
-                foreach (var item in _gems)
-                {
-                    DBGLOG += $"\n\t[{item.Key}] {item.Value}";
-                }
-                Debug.Log(DBGLOG);
-            }
+            //{//DEBUG LOG
+            //    string DBGLOG = $"[Swap_Gems] Before Gems ({_gems.Count}):";
+            //    foreach (var item in _gems)
+            //    {
+            //        DBGLOG += $"\n\t[{item.Key}] {item.Value}";
+            //    }
+            //    Debug.Log(DBGLOG);
+            //}
 
             //변경된 위치로 cell 좌표 업데이트
             var pos_cell1 = _tilemap.WorldToCell(__gem1.transform.position);
@@ -38,15 +38,18 @@ namespace LLOYD.Match3
             __gem1.Update_Name(pos_cell1);
             __gem2.Update_Name(pos_cell2);
 
-            {//DEBUG LOG
-                string DBGLOG = $"[Swap_Gems] After Gems ({_gems.Count}):";
-                foreach (var item in _gems)
-                {
-                    DBGLOG += $"\n\t[{item.Key}] {item.Value}";
-                }
-                Debug.Log(DBGLOG);
-            }
+            //{//DEBUG LOG
+            //    string DBGLOG = $"[Swap_Gems] After Gems ({_gems.Count}):";
+            //    foreach (var item in _gems)
+            //    {
+            //        DBGLOG += $"\n\t[{item.Key}] {item.Value}";
+            //    }
+            //    Debug.Log(DBGLOG);
+            //}
             yield return new WaitForSeconds(0.1f);
+
+            //StartCoroutine(StartChain_AfterSwap(_swap_gems[0], _swap_gems[1]));// 스와이프 완료 후 연쇄 반응 시작
+            StartCoroutine(Process_ChainReaction());
         }
 
         public void Enter_Gem(Node.Gem __gem)
