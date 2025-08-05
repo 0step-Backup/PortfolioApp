@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace LLOYD.Match3
 {
+    using Common;
+
     public partial class Stage
     {
         //bool IsAdjacent(Vector3 pos1, Vector3 pos2) => Vector3.Distance(pos1, pos2) <= 1f;
@@ -49,7 +51,7 @@ namespace LLOYD.Match3
                     //    string DBGLOG = "maching gems";
                     //    foreach (var gem in matches)
                     //    {
-                    //        gem.GetComponent<SpriteRenderer>().color = new Color32(64, 64, 64, 255);
+                    //        //gem.GetComponent<SpriteRenderer>().color = new Color32(64, 64, 64, 255);
 
                     //        var pos_cell = _tilemap.WorldToCell(gem.transform.position);
                     //        DBGLOG += $"\n\t[{pos_cell.x}, {pos_cell.y}] {gem}";
@@ -61,7 +63,7 @@ namespace LLOYD.Match3
                     //        DBGLOG += $"\n\t[{gem.Key.x}, {gem.Key.y}] {gem.Value}";
                     //    Debug.Log(DBGLOG);
 
-                    //    Debug.Break();
+                    //    //Debug.Break();
                     //}
 
                     hasMatches = true;
@@ -70,6 +72,9 @@ namespace LLOYD.Match3
                     //매치된 Gem 제거
                     //Remove_MatchedGems(matches);
                     yield return new WaitForSeconds(Remove_MatchedGems(matches));
+
+                    //Gem 추가 및 낙하
+                    yield return StartCoroutine(Drop_Gems());
                 }
                 else
                 {
@@ -168,6 +173,58 @@ namespace LLOYD.Match3
             }
 
             return matchedGems.ToList();
+        }
+
+        // 떨어뜨리기
+        IEnumerator Drop_Gems()
+        {
+            bool hasDropped = true;
+
+            // 더 이상 떨어질 Gem이 없을 때까지 반복
+            while (hasDropped)
+            {
+                hasDropped = false;
+                var movesToExecute = new List<(Vector3Int fromCell, Vector3Int toCell, Node.Gem gem)>();
+
+                // 각 열(column)을 아래에서 위로 검사
+                foreach (var kv in _gems)
+                {
+                    var cell = kv.Key;
+                    var gem = kv.Value;
+
+                    if (gem == null) continue; // 빈 셀은 건너뛰기
+
+                    // 아래쪽 셀 확인
+                    var belowCell = cell + Vector3Int.down;
+                    
+                    // 아래쪽 셀이 _gems에 있고, 비어있다면 떨어뜨리기
+                    if (_gems.ContainsKey(belowCell) && _gems[belowCell] == null)
+                    {
+                        // 이동할 항목을 리스트에 추가 (아직 실행하지 않음)
+                        movesToExecute.Add((cell, belowCell, gem));
+                        hasDropped = true;
+                    }
+                }
+
+                // 루프가 끝난 후 실제 이동 실행
+                foreach (var move in movesToExecute)
+                {
+                    Vector3 targetPos = _tilemap.GetCellCenterWorld(move.toCell);
+                    float moveTime = move.gem.Move(targetPos);
+
+                    // _gems 업데이트
+                    _gems[move.fromCell] = null;        // 기존 위치를 null로
+                    _gems[move.toCell] = move.gem;      // 새 위치에 Gem 설정
+                }
+
+                // Gem 이동 대기시간
+                if (hasDropped)
+                {
+                    yield return new WaitForSeconds(0.1f);
+                    //Debug.Break();
+                }
+            }
+            //Debug.Log("Drop_Gems completed!");
         }
     }
 }
