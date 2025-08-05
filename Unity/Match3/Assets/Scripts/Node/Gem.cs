@@ -61,9 +61,11 @@ namespace LLOYD.Match3.Node
         {
             var sequence = DOTween.Sequence();
             {
-                sequence.Append(this.transform.DOScale(0f, CrashTime));
+                sequence.Append(this.transform.DOScale(0f, CrashTime).SetEase(Ease.InBack));
                 sequence.Join(_sprRenderer.DOFade(0f, CrashTime));
+
                 //sequence.SetEase(Ease.OutExpo);
+
                 sequence.OnComplete(() => {
                     Destroy(this.gameObject);
                 });
