@@ -75,6 +75,9 @@ namespace LLOYD.Match3
 
                     //Gem 추가 및 낙하
                     yield return StartCoroutine(Drop_Gems());
+
+                    //새로운 잼 추가
+                    yield return StartCoroutine(RegenGem_Empty());
                 }
                 else
                 {
@@ -225,6 +228,59 @@ namespace LLOYD.Match3
                 }
             }
             //Debug.Log("Drop_Gems completed!");
+        }
+
+        void Complte_RegenGem(Node.Gem __gem)
+        {
+            __gem.transform.parent = TRSF_Gems;
+
+            var pos_cell = _tilemap.WorldToCell(__gem.transform.position);
+
+            _gems[pos_cell] = __gem;
+            __gem.Update_Name(pos_cell);
+
+            //Debug.Log($"Complte_RegenGem({__gem})");
+        }
+
+        IEnumerator RegenGem_Empty()
+        {
+            var columns = new Dictionary<int, List<Vector3Int>>();
+            foreach (var cell in _regenCells.Keys)
+            {
+                int x = cell.x;
+                if (!columns.ContainsKey(x))
+                    columns[x] = new List<Vector3Int>();
+                columns[x].Add(cell);
+            }
+
+            var data_newgem = new Addon.Tilemap.GemDesignValue() {
+                type = Defines.Gem.random,
+                pos_wolrd = Vector3Int.zero,
+            };
+
+            foreach (var col in columns.Values)
+            {
+                // y 오름차순(아래에서 위로) 정렬
+                col.Sort((a, b) => a.y.CompareTo(b.y));
+
+                foreach (var cell in col)
+                {
+                    var targetcell = cell + Vector3Int.down;
+                    Debug.AssertFormat(_gems.ContainsKey(targetcell), $"키가 없어? ({targetcell.x}, {targetcell.y})");
+                    if (_gems[targetcell])
+                        continue;
+
+                    // 비어있는 셀에만 새 젬 생성
+                    Vector3 spawnPos = _regenCells[cell];
+                    Vector3 targetPos = _regenCells[cell] + Vector3.down;
+                    data_newgem.pos_wolrd = spawnPos;
+
+                    var gem = Add_Gem(Vector3Int.zero, data_newgem, Node.Gem.NewType.regen);
+                    //Debug.Break();
+
+                    yield return gem.Regen(targetPos, Complte_RegenGem);
+                }
+            }
         }
     }
 }
