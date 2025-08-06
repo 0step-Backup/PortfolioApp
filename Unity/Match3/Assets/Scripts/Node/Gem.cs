@@ -49,11 +49,28 @@ namespace LLOYD.Match3.Node
         }
 
         const float SwapMovingTime = 0.2f;
-        public float Move(Vector3 __pos)
+        public float Swap(Vector3 __pos)
         {
             _isMoving = true;
             this.transform.DOMove(__pos, SwapMovingTime)
                 //.SetEase(Ease.OutBack)
+                .OnComplete(() => {
+                    //Debug.Log($"{_type}");
+                    _isMoving = false;
+                });
+
+            return SwapMovingTime;
+        }
+        public float Drop(Vector3 __pos, bool __isBottomGoal)
+        {
+            _isMoving = true;
+
+            var ease = !__isBottomGoal ? Ease.Linear : Ease.OutBack;
+            //맨 아래 마지막 이동이면 튕기는 연출
+
+            this.transform.DOMove(__pos, SwapMovingTime)
+                .SetEase(ease)
+
                 .OnComplete(() => {
                     //Debug.Log($"{_type}");
                     _isMoving = false;
@@ -88,7 +105,7 @@ namespace LLOYD.Match3.Node
         {
             var sequence = DOTween.Sequence();
             {
-                sequence.Append(this.transform.DOScale(0f, CrashTime).SetEase(Ease.InBack));
+                sequence.Append(this.transform.DOScale(2f, CrashTime));
                 sequence.Join(_sprRenderer.DOFade(0f, CrashTime));
 
                 //sequence.SetEase(Ease.OutExpo);

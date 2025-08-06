@@ -12,8 +12,8 @@ namespace LLOYD.Match3
             var pos1 = __gem1.transform.position;
             var pos2 = __gem2.transform.position;
 
-            __gem1.Move(pos2);
-            __gem2.Move(pos1);
+            __gem1.Swap(pos2);
+            __gem2.Swap(pos1);
 
             while (__gem1.IsMoving || __gem2.IsMoving)
             {

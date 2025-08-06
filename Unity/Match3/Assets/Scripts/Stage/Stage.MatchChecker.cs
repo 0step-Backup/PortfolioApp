@@ -188,6 +188,9 @@ namespace LLOYD.Match3
                 hasDropped = false;
                 var movesToExecute = new List<(Vector3Int fromCell, Vector3Int toCell, Node.Gem gem)>();
 
+                Dictionary<int, int> bottomGemPos = new Dictionary<int, int>();
+                //낙하 잼의 최하단 좌표
+
                 // 각 열(column)을 아래에서 위로 검사
                 foreach (var kv in _gems)
                 {
@@ -205,14 +208,39 @@ namespace LLOYD.Match3
                         // 이동할 항목을 리스트에 추가 (아직 실행하지 않음)
                         movesToExecute.Add((cell, belowCell, gem));
                         hasDropped = true;
+
+                        if(bottomGemPos.ContainsKey(belowCell.x))
+                        {
+                            if (belowCell.y < bottomGemPos[belowCell.x])
+                                bottomGemPos[belowCell.x] = belowCell.y;
+                        }
+                        else
+                        {
+                            bottomGemPos.Add(belowCell.x, belowCell.y);
+                        }
                     }
                 }
 
                 // 루프가 끝난 후 실제 이동 실행
                 foreach (var move in movesToExecute)
                 {
+                    bool isBottom_Goal = false;
+                    if(bottomGemPos.ContainsKey(move.toCell.x))
+                    {
+                        if(move.toCell.y == bottomGemPos[move.toCell.x])//최하단 젬이고
+                        {
+                            var more_down_cell = move.toCell + Vector3Int.down;//더 아래 Cell
+
+                            //잼목록에 없거나(바닥), 더 아래 잼이 있으면 마지막 이동
+                            if (!_gems.ContainsKey(more_down_cell) || _gems[more_down_cell])
+                                isBottom_Goal = true;
+                        }
+
+                        //{ if (isBottom_Goal) Debug.Log($"제일 바닥에 있고 마지막 이동= [{move.toCell}] {move.gem}"); }//DEV TEST
+                    }
+
                     Vector3 targetPos = _tilemap.GetCellCenterWorld(move.toCell);
-                    float moveTime = move.gem.Move(targetPos);
+                    float moveTime = move.gem.Drop(targetPos, isBottom_Goal);
 
                     // _gems 업데이트
                     _gems[move.fromCell] = null;        // 기존 위치를 null로
@@ -222,7 +250,7 @@ namespace LLOYD.Match3
                 // Gem 이동 대기시간
                 if (hasDropped)
                 {
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.075f);
                     //Debug.Break();
                 }
             }
