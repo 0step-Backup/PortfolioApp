@@ -25,7 +25,11 @@ namespace LLOYD.Match3
 
         Tilemap _tilemap = null;
 
-        Dictionary<Vector3Int, Node.Gem> _gems = new Dictionary<Vector3Int, Node.Gem>();
+        //Hierachy 노출. DEV 편의용
+        [SerializedDictionary("Cell내의 좌표", "Gem")]
+        [SerializeField]
+        SerializedDictionary<Vector3Int, Node.Gem> _gems = new SerializedDictionary<Vector3Int, Node.Gem>();
+
         Dictionary<Vector3Int, Vector3> _regenCells = null;
 
         Node.Gem _pickGem = null;
