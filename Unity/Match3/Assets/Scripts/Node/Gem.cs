@@ -5,6 +5,7 @@ namespace LLOYD.Match3.Node
     using DG.Tweening;
 
     using LLOYD.Match3.Common;
+    using System;
 
     public class Gem : MonoBehaviour
     {
@@ -19,6 +20,10 @@ namespace LLOYD.Match3.Node
         public bool IsMoving => _isMoving;
 
         const float CrashTime = 0.2f;
+
+        public enum NewType { NONE = -1,
+            normal = 0, regen = 1,
+        }
 
         private void Awake()
         {
@@ -55,6 +60,28 @@ namespace LLOYD.Match3.Node
                 });
 
             return SwapMovingTime;
+        }
+        public float Regen(Vector3 __pos, Action<Gem> __act)
+        {
+            float duration = SwapMovingTime;
+            { duration = 0.2f; }//DEV TEST
+
+            _sprRenderer.color = new Color(1f, 1f, 1f, 0.15f);
+            var sequence = DOTween.Sequence();
+            {
+                sequence.Append(this.transform.DOMove(__pos, duration));
+                sequence.Join(_sprRenderer.DOFade(1f, duration));
+
+                //sequence.SetEase(Ease.OutExpo);
+                //sequence.onComplete += __act;
+
+                sequence.OnComplete(() => {
+                    if (null != __act) __act(this);
+                });
+            }
+            sequence.Play();
+
+            return duration;
         }
         
         public float Crash()

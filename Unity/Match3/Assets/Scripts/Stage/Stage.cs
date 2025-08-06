@@ -17,6 +17,7 @@ namespace LLOYD.Match3
         [SerializeField] GameObject PRFB_Gem = null;
         [SerializeField] Transform TRSF_Gems = null;
         [SerializeField] Transform TRSF_UnderWorld = null;
+        [SerializeField] Transform TRSF_Regens = null;
 
         [SerializedDictionary("Defines.Gem", "스프라이트")]
         [SerializeField]
@@ -50,7 +51,8 @@ namespace LLOYD.Match3
             _gems.Clear();
         }
 
-        public void Add_Gem(Vector3Int __pos_cell, Addon.Tilemap.GemDesignValue __gemvalue)
+        public Node.Gem Add_Gem(Vector3Int __pos_cell, Addon.Tilemap.GemDesignValue __gemvalue
+            , Node.Gem.NewType __newtype = Node.Gem.NewType.normal)
         {
             Sprite sprite = null;
 
@@ -66,14 +68,20 @@ namespace LLOYD.Match3
 
             if (null != sprite)
             {
-                var newgem = Instantiate(PRFB_Gem, TRSF_Gems);
+                Transform trsf = TRSF_Gems;
+                if (Node.Gem.NewType.regen == __newtype)
+                    trsf = TRSF_Regens;
+
+                var newgem = Instantiate(PRFB_Gem, trsf);
                 newgem.transform.position = pos_world;
                 newgem.name = $"[{__pos_cell.x}, {__pos_cell.y}] {type}";
 
                 var cs_newgem = newgem.GetComponent<Node.Gem>();
                 cs_newgem.Setup(this, type, sprite);
                 cs_newgem.Update_Name(__pos_cell);
-                _gems.Add(__pos_cell, cs_newgem);
+
+                if(Node.Gem.NewType.normal == __newtype)
+                    _gems.Add(__pos_cell, cs_newgem);
 
                 //{
                 //    //var pos_cell = _tilemap.WorldToCell(pos_world);
@@ -81,7 +89,9 @@ namespace LLOYD.Match3
                 //    var pos_cell = _tilemap.Get_CellPosition_byWorldPosition(pos_world);
                 //    Debug.Log($"[{pos_cell.x}, {pos_cell.y}] {type}: world position= {pos_world.x}, {pos_world.y}");
                 //}
+                return cs_newgem;
             }
+            return null;
         }
 
         //// Update is called once per frame
