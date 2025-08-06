@@ -75,9 +75,6 @@ namespace LLOYD.Match3
 
                     //Gem 추가 및 낙하
                     yield return StartCoroutine(Drop_Gems());
-
-                    //새로운 잼 추가
-                    yield return StartCoroutine(RegenGem_Empty());
                 }
                 else
                 {
@@ -186,6 +183,8 @@ namespace LLOYD.Match3
             // 더 이상 떨어질 Gem이 없을 때까지 반복
             while (hasDropped)
             {
+                RegenGem_Empty();//빈Cell 있으면 Gem 추가 생성
+
                 hasDropped = false;
                 var movesToExecute = new List<(Vector3Int fromCell, Vector3Int toCell, Node.Gem gem)>();
 
@@ -234,16 +233,13 @@ namespace LLOYD.Match3
         {
             __gem.transform.parent = TRSF_Gems;
 
-            var pos_cell = _tilemap.WorldToCell(__gem.transform.position);
-
-            _gems[pos_cell] = __gem;
-            __gem.Update_Name(pos_cell);
-
             //Debug.Log($"Complte_RegenGem({__gem})");
         }
 
-        IEnumerator RegenGem_Empty()
+        bool RegenGem_Empty()
         {
+            bool ret = false;
+
             var columns = new Dictionary<int, List<Vector3Int>>();
             foreach (var cell in _regenCells.Keys)
             {
@@ -275,12 +271,20 @@ namespace LLOYD.Match3
                     Vector3 targetPos = _regenCells[cell] + Vector3.down;
                     data_newgem.pos_wolrd = spawnPos;
 
-                    var gem = Add_Gem(Vector3Int.zero, data_newgem, Node.Gem.NewType.regen);
+                    var gem = Add_Gem(targetcell, data_newgem, Node.Gem.NewType.regen);
+                    {
+                        _gems[targetcell] = gem;
+                        gem.Update_Name(targetcell);
+                    }
                     //Debug.Break();
 
-                    yield return gem.Regen(targetPos, Complte_RegenGem);
+                    gem.Regen(targetPos, Complte_RegenGem);
+                    ret = true;
                 }
             }
+            //{ if (ret) Debug.Break(); }//DEV TEST
+
+            return ret;
         }
     }
 }
