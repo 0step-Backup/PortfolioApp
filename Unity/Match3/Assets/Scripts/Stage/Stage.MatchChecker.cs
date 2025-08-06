@@ -25,7 +25,7 @@ namespace LLOYD.Match3
         }
 
         //매칭 연쇄 처리
-        IEnumerator Process_ChainReaction()
+        IEnumerator Process_ChainReaction(Vector3Int __cellpos1, Vector3Int __cellpos2)
         {
             bool hasMatches = true;
             int chainCount = 0;
@@ -36,7 +36,6 @@ namespace LLOYD.Match3
 
             while (hasMatches)
             {
-                chainCount++;
                 hasMatches = false;
 
                 //모든 젬의 이동 완료까지 대기
@@ -47,6 +46,8 @@ namespace LLOYD.Match3
 
                 if (matches.Count > 0)
                 {
+                    chainCount++;
+
                     //{//DEV TEST
                     //    string DBGLOG = "maching gems";
                     //    foreach (var gem in matches)
@@ -79,6 +80,22 @@ namespace LLOYD.Match3
                 else
                 {
                     //Debug.Log($"Chain completed! Total chains: {chainCount}");
+
+                    if (0 == chainCount)//매칭된 적이 없을 때. Swap 실패
+                    {//되돌리기
+                        var pos1 = _gems[__cellpos1].transform.position;
+                        var pos2 = _gems[__cellpos2].transform.position;
+
+                        _gems[__cellpos1].Rollback_Swap(pos2);
+                        _gems[__cellpos2].Rollback_Swap(pos1);
+
+                        while (_gems[__cellpos1].IsMoving || _gems[__cellpos2].IsMoving)
+                            yield return null;
+
+                        var temp = _gems[__cellpos1];
+                        _gems[__cellpos1] = _gems[__cellpos2];
+                        _gems[__cellpos2] = temp;
+                    }
                 }
             }
         }

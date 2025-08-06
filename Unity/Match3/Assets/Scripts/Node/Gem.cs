@@ -19,6 +19,8 @@ namespace LLOYD.Match3.Node
         bool _isMoving = false;
         public bool IsMoving => _isMoving;
 
+        const float SwapMovingTime = 0.2f;
+        const float RallbackMovingTime = 0.1f;
         const float CrashTime = 0.2f;
 
         public enum NewType { NONE = -1,
@@ -48,7 +50,6 @@ namespace LLOYD.Match3.Node
             this.name = $"[{__pos_cell.x}, {__pos_cell.y}] {_type}";
         }
 
-        const float SwapMovingTime = 0.2f;
         public float Swap(Vector3 __pos)
         {
             _isMoving = true;
@@ -61,6 +62,17 @@ namespace LLOYD.Match3.Node
 
             return SwapMovingTime;
         }
+        public float Rollback_Swap(Vector3 __pos)
+        {
+            _isMoving = true;
+            this.transform.DOMove(__pos, RallbackMovingTime)
+                .OnComplete(() => {
+                    _isMoving = false;
+                });
+
+            return RallbackMovingTime;
+        }
+
         public float Drop(Vector3 __pos, bool __isBottomGoal)
         {
             _isMoving = true;

@@ -49,7 +49,7 @@ namespace LLOYD.Match3
             yield return new WaitForSeconds(0.1f);
 
             //StartCoroutine(StartChain_AfterSwap(_swap_gems[0], _swap_gems[1]));// 스와이프 완료 후 연쇄 반응 시작
-            StartCoroutine(Process_ChainReaction());
+            StartCoroutine(Process_ChainReaction(pos_cell1, pos_cell2));
         }
 
         public void Enter_Gem(Node.Gem __gem)
