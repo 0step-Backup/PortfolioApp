@@ -47,6 +47,8 @@ namespace LLOYD.Match3
                 if (matches.Count > 0)
                 {
                     chainCount++;
+                    if (1 == chainCount)//Swap 후 한번만 카운트
+                        _HUD.Count_Swap();
 
                     //{//DEV TEST
                     //    string DBGLOG = "maching gems";
@@ -142,6 +144,8 @@ namespace LLOYD.Match3
                         _gems[finded.Key] = null;
 
                     item.transform.parent = TRSF_UnderWorld;
+
+                    _HUD.Count_Gem(item.TYPE);
                 }
             }
 

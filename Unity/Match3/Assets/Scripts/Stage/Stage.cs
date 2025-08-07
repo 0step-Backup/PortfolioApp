@@ -30,6 +30,8 @@ namespace LLOYD.Match3
         [SerializeField]
         SerializedDictionary<Vector3Int, Node.Gem> _gems = new SerializedDictionary<Vector3Int, Node.Gem>();
 
+        [SerializeField] HUD._Manager _HUD = null;
+
         Dictionary<Vector3Int, Vector3> _regenCells = null;
 
         Node.Gem _pickGem = null;

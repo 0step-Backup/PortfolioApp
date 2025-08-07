@@ -29,21 +29,21 @@ namespace LLOYD.Match3.HUD
         #region [Gem Count]
         //public void Set_GemCount(Common.Defines.Gem __gem, int __count)
         //{
-        //    if (DICT_GemCounter.ContainsKey(__gem))
+        //    if (!DICT_GemCounter.ContainsKey(__gem))
         //        return;
 
         //    DICT_GemCounter[__gem].Set_Count(__count);
         //}
         public void Count_Gem(Common.Defines.Gem __gem)
         {
-            if (DICT_GemCounter.ContainsKey(__gem))
+            if (!DICT_GemCounter.ContainsKey(__gem))
                 return;
 
             DICT_GemCounter[__gem].Counting();
         }
         public void Reset_GemCount(Common.Defines.Gem __gem)
         {
-            if (DICT_GemCounter.ContainsKey(__gem))
+            if (!DICT_GemCounter.ContainsKey(__gem))
                 return;
 
             DICT_GemCounter[__gem].Reset_Counting();
@@ -51,11 +51,12 @@ namespace LLOYD.Match3.HUD
         #endregion
 
         #region [Swap Count]
-        public void Set_SwapCount(int __count)
+        /*public*/ void Set_SwapCount(int __count)
         {
             _swapCount = __count;
             TXT_SwapCounter.text = __count.ToString();
         }
+        public void Count_Swap() => Set_SwapCount(_swapCount += 1);
         public void Reset_SwapCount() => Set_SwapCount(0);
         #endregion
 
