@@ -1,7 +1,7 @@
 ## Match3
 
 Untiy로 개발한 Match3 게임 프트폴리오 앱
-![cover](https://raw.githubusercontent.com/0step-Backup/PortfolioApp/refs/heads/main/Unity/Match3/%23%20public/cover.png))
+![cover](https://raw.githubusercontent.com/0step-Backup/PortfolioApp/refs/heads/main/Unity/Match3/%23%20public/cover.png)
 
 ### 개발 환경
 - Unity (2022.3.38f1)
