@@ -98,6 +98,12 @@ namespace LLOYD.Match3
             return null;
         }
 
+        // LevelDesign에서 사용하는 헬퍼 메서드
+        public Node.Gem Get_GemAt(Vector3Int cell)
+        {
+            return _gems.TryGetValue(cell, out var gem) ? gem : null;
+        }
+
         //// Update is called once per frame
         //void Update() {}
     }
