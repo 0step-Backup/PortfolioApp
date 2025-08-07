@@ -127,10 +127,10 @@ namespace LLOYD.Match3
             var matchedGems = new HashSet<Node.Gem>();
             
             // 라인 매칭
-            CheckLineMatches(matchedGems);
+            Check_LineMatches(matchedGems);
             
             // 블록 매칭 (2x2 이상 정사각형)
-            CheckBlockMatches(matchedGems);
+            Check_BlockMatches(matchedGems);
 
             // 매칭된 젬들 처리
             if (matchedGems.Count > 0)
@@ -148,7 +148,7 @@ namespace LLOYD.Match3
             return matchedGems.ToList();
         }
 
-        private void CheckLineMatches(HashSet<Node.Gem> matchedGems)
+        private void Check_LineMatches(HashSet<Node.Gem> matchedGems)
         {
             foreach (var kv in _gems)
             {
@@ -202,7 +202,7 @@ namespace LLOYD.Match3
             }
         }
 
-        private void CheckBlockMatches(HashSet<Node.Gem> matchedGems, int maxBlockSize = 4)
+        private void Check_BlockMatches(HashSet<Node.Gem> matchedGems, int maxBlockSize = 4)
         {
             var checkedCells = new HashSet<Vector3Int>();
 
@@ -217,7 +217,7 @@ namespace LLOYD.Match3
                 // 다양한 크기의 정사각형 블록 검사 (2x2부터 maxBlockSize까지)
                 for (int size = 2; size <= maxBlockSize; size++)
                 {
-                    if (IsValidSquareBlock(startCell, startGem.TYPE, size))
+                    if (IsValid_SquareBlock(startCell, startGem.TYPE, size))
                     {
                         // 해당 블록의 모든 젬을 매칭 목록에 추가
                         for (int dx = 0; dx < size; dx++)
@@ -239,7 +239,7 @@ namespace LLOYD.Match3
         }
 
         // 정사각형 블록 유효성 검사
-        private bool IsValidSquareBlock(Vector3Int startCell, Defines.Gem gemType, int size)
+        private bool IsValid_SquareBlock(Vector3Int startCell, Defines.Gem gemType, int size)
         {
             for (int dx = 0; dx < size; dx++)
             {
