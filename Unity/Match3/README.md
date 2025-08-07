@@ -7,6 +7,7 @@ Untiy로 개발한 Match3 게임 프트폴리오 앱
 
 ### 개발 환경
 - Unity (2022.3.38f1)
+- UGUI
 
 ### 개요
 - Tilemap 사용한 스테이지 구성
@@ -28,3 +29,10 @@ Untiy로 개발한 Match3 게임 프트폴리오 앱
 ### 추가 패키지
 - [DOTween Pro](https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416): 이동 등의 효과를 위한 애니메이션 시스템
 - [ayellowpaper.Serialized Dictionary](https://assetstore.unity.com/packages/tools/utilities/serialized-dictionary-243052): 인스펙터 편집을 위한 직렬화 가능 사전
+
+### 참고
+- [Gem Hunter Match (Asset Store)](https://assetstore.unity.com/packages/essentials/tutorial-projects/gem-hunter-match-2d-sample-project-278941)
+  - Unity Technologies 의 에셋
+  - 이미지 리소스 사용
+  - 게임 구현 참고
+- [[daltonbr] Match3 (github)](https://github.com/daltonbr/Match3)
