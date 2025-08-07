@@ -15,14 +15,14 @@ namespace LLOYD.Match3.HUD.NODE
             Set_Count(0);
         }
 
-        public void Reset_Counting() => Set_Count(0);
-
-        public void Counting() => Set_Count(_count + 1);
-
-        void Set_Count(int __count)
+        /*public*/ void Set_Count(int __count)
         {
             _count = __count;
             TXT.text = __count.ToString();
         }
+
+        public void Reset_Counting() => Set_Count(0);
+
+        public void Counting() => Set_Count(_count + 1);
     }
 }
