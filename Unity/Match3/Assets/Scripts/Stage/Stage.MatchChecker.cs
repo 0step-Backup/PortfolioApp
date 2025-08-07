@@ -38,8 +38,8 @@ namespace LLOYD.Match3
             {
                 hasMatches = false;
 
-                //모든 젬의 이동 완료까지 대기
-                yield return StartCoroutine(WaitForAll_GemsSettled());
+                ////모든 젬의 이동 완료까지 대기
+                //yield return StartCoroutine(WaitForAll_GemsSettled());
 
                 //매치 찾기
                 var matches = FindAll_Matches();
@@ -121,11 +121,35 @@ namespace LLOYD.Match3
             return ret;
         }
 
-        // 매치 검사
+        // 매치 검사 (라인 + 블록 매칭)
         List<Node.Gem> FindAll_Matches()
         {
             var matchedGems = new HashSet<Node.Gem>();
+            
+            // 라인 매칭
+            CheckLineMatches(matchedGems);
+            
+            // 블록 매칭 (2x2 이상 정사각형)
+            CheckBlockMatches(matchedGems);
 
+            // 매칭된 젬들 처리
+            if (matchedGems.Count > 0)
+            {
+                foreach (var item in matchedGems)
+                {
+                    var finded = _gems.FirstOrDefault((gem) => gem.Value == item);
+                    if (null != finded.Value)
+                        _gems[finded.Key] = null;
+
+                    item.transform.parent = TRSF_UnderWorld;
+                }
+            }
+
+            return matchedGems.ToList();
+        }
+
+        private void CheckLineMatches(HashSet<Node.Gem> matchedGems)
+        {
             foreach (var kv in _gems)
             {
                 var cell = kv.Key;
@@ -176,20 +200,61 @@ namespace LLOYD.Match3
                         matchedGems.Add(g);
                 }
             }
+        }
 
-            if(0 < matchedGems.Count)
+        private void CheckBlockMatches(HashSet<Node.Gem> matchedGems, int maxBlockSize = 4)
+        {
+            var checkedCells = new HashSet<Vector3Int>();
+
+            foreach (var kv in _gems)
             {
-                foreach (var item in matchedGems)
-                {
-                    var finded = _gems.FirstOrDefault((gem) => gem.Value == item);
-                    if (null != finded.Value)
-                        _gems[finded.Key] = null;
+                var startCell = kv.Key;
+                var startGem = kv.Value;
+                
+                if (startGem == null || checkedCells.Contains(startCell)) 
+                    continue;
 
-                    item.transform.parent = TRSF_UnderWorld;
+                // 다양한 크기의 정사각형 블록 검사 (2x2부터 maxBlockSize까지)
+                for (int size = 2; size <= maxBlockSize; size++)
+                {
+                    if (IsValidSquareBlock(startCell, startGem.TYPE, size))
+                    {
+                        // 해당 블록의 모든 젬을 매칭 목록에 추가
+                        for (int dx = 0; dx < size; dx++)
+                        {
+                            for (int dy = 0; dy < size; dy++)
+                            {
+                                var cell = startCell + new Vector3Int(dx, dy, 0);
+                                if (_gems.TryGetValue(cell, out var gem))
+                                {
+                                    matchedGems.Add(gem);
+                                    checkedCells.Add(cell);
+                                }
+                            }
+                        }
+                        break; // 더 큰 블록 검사 중단 (최대 크기 우선)
+                    }
                 }
             }
+        }
 
-            return matchedGems.ToList();
+        // 정사각형 블록 유효성 검사
+        private bool IsValidSquareBlock(Vector3Int startCell, Defines.Gem gemType, int size)
+        {
+            for (int dx = 0; dx < size; dx++)
+            {
+                for (int dy = 0; dy < size; dy++)
+                {
+                    var cell = startCell + new Vector3Int(dx, dy, 0);
+                    if (!_gems.TryGetValue(cell, out var gem) 
+                        || gem == null 
+                        || gem.TYPE != gemType)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         // 떨어뜨리기
