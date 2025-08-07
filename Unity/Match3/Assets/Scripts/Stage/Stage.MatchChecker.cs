@@ -150,56 +150,64 @@ namespace LLOYD.Match3
 
         private void Check_LineMatches(HashSet<Node.Gem> matchedGems)
         {
+            const int MIN_MATCH_COUNT = 3;
+
             foreach (var kv in _gems)
             {
                 var cell = kv.Key;
                 var gem = kv.Value;
                 if (gem == null) continue;
 
-                // 가로 매치 검사
-                var horiz = new List<Node.Gem> { gem };
-                for (int dx = 1; ; dx++)
+                // 가로 방향 매치 검사
+                var horizontalMatches = Get_LineMatches(cell, gem, Vector3Int.right);
+                if (horizontalMatches.Count >= MIN_MATCH_COUNT)
                 {
-                    var nextCell = cell + new Vector3Int(dx, 0, 0);
-                    if (_gems.TryGetValue(nextCell, out var nextGem) && nextGem != null && nextGem.TYPE == gem.TYPE)
-                        horiz.Add(nextGem);
-                    else break;
-                }
-                for (int dx = -1; ; dx--)
-                {
-                    var nextCell = cell + new Vector3Int(dx, 0, 0);
-                    if (_gems.TryGetValue(nextCell, out var nextGem) && nextGem != null && nextGem.TYPE == gem.TYPE)
-                        horiz.Add(nextGem);
-                    else break;
-                }
-                if (horiz.Count >= 3)
-                {
-                    foreach (var g in horiz)
+                    foreach (var g in horizontalMatches)
                         matchedGems.Add(g);
                 }
 
-                // 세로 매치 검사
-                var vert = new List<Node.Gem> { gem };
-                for (int dy = 1; ; dy++)
+                // 세로 방향 매치 검사  
+                var verticalMatches = Get_LineMatches(cell, gem, Vector3Int.up);
+                if (verticalMatches.Count >= MIN_MATCH_COUNT)
                 {
-                    var nextCell = cell + new Vector3Int(0, dy, 0);
-                    if (_gems.TryGetValue(nextCell, out var nextGem) && nextGem != null && nextGem.TYPE == gem.TYPE)
-                        vert.Add(nextGem);
-                    else break;
-                }
-                for (int dy = -1; ; dy--)
-                {
-                    var nextCell = cell + new Vector3Int(0, dy, 0);
-                    if (_gems.TryGetValue(nextCell, out var nextGem) && nextGem != null && nextGem.TYPE == gem.TYPE)
-                        vert.Add(nextGem);
-                    else break;
-                }
-                if (vert.Count >= 3)
-                {
-                    foreach (var g in vert)
+                    foreach (var g in verticalMatches)
                         matchedGems.Add(g);
                 }
             }
+        }
+
+        // 특정 방향으로 라인 매치 검사하는 통합 메서드
+        private List<Node.Gem> Get_LineMatches(Vector3Int startCell, Node.Gem startGem, Vector3Int direction)
+        {
+            var matches = new List<Node.Gem> { startGem };
+
+            // 양의 방향으로 검사 (right, up)
+            for (int step = 1; ; step++)
+            {
+                var nextCell = startCell + direction * step;
+                if (_gems.TryGetValue(nextCell, out var nextGem) 
+                    && nextGem != null 
+                    && nextGem.TYPE == startGem.TYPE)
+                {
+                    matches.Add(nextGem);
+                }
+                else break;
+            }
+
+            // 음의 방향으로 검사 (left, down)
+            for (int step = 1; ; step++)
+            {
+                var nextCell = startCell - direction * step;
+                if (_gems.TryGetValue(nextCell, out var nextGem) 
+                    && nextGem != null 
+                    && nextGem.TYPE == startGem.TYPE)
+                {
+                    matches.Add(nextGem);
+                }
+                else break;
+            }
+
+            return matches;
         }
 
         private void Check_BlockMatches(HashSet<Node.Gem> matchedGems, int maxBlockSize = 4)
